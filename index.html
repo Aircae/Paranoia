@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<title>Paranoia</title>
+		<script src="index.js"></script>
+		<link rel="icon" type="image/png" href="favicon.png"/>
+		<link rel="stylesheet" type="text/css" href="index.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	</head>
+	<body>
+		<div class="container">
+		    <!-- 电脑端侧边栏 -->
+		    <nav class="sidebar">
+		        <ul class="nav-list">
+		            <li class="nav-item"><a href="document/index.html"><i class="fas fa-file-alt"></i> 文库</a></li>
+		            <li class="nav-item"><a href="music/index.html"><i class="fas fa-music"></i> 音乐</a></li>
+		            <li class="nav-item"><a href="picture/index.html"><i class="fas fa-image"></i> 图库</a></li>
+		        </ul>
+		
+		        <!-- 侧边栏底部内容 -->
+		        <div class="sidebar-footer">
+		            <div class="sidebar-icons">
+		                <img src="icon.png"/>
+		            </div>
+		            <p style="color: rgba(255, 255, 255, 0.7)">AiKo</p>
+		        </div>
+		    </nav>
+		
+		    <!-- 触发按钮 -->
+		    <div class="toggle-btn" onclick="toggleSidebar()">
+		        <i class="fas fa-bars"></i>
+		    </div>
+		
+		    <!-- 主内容区域 -->
+		    <main class="main-content">
+		        <!-- 模糊背景 -->
+		        <div class="background-container">
+		            <img src="background.png" alt="背景图片" class="blur-background">
+		        </div>
+		
+		        <!-- 文字内容 -->
+		        <div class="content">
+		            <h1 style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)">Paranoia</h1>
+		            <p style="color: rgba(255, 255, 255, 0.9)">妄想症</p>
+		        </div>
+		    </main>
+		
+		    <!-- 移动端底部导航栏 -->
+		    <nav class="mobile-nav">
+		        <ul class="mobile-nav-list">
+		            <li class="mobile-nav-item">
+		                <a href="document/index.html">
+		                    <i class="fas fa-file-alt"></i>
+		                    <span>文库</span>
+		                </a>
+		            </li>
+		            <li class="mobile-nav-item">
+		                <a href="music/index.html">
+		                    <i class="fas fa-music"></i>
+		                    <span>音乐</span>
+		                </a>
+		            </li>
+		            <li class="mobile-nav-item">
+		                <a href="picture/index.html">
+		                    <i class="fas fa-image"></i>
+		                    <span>图库</span>
+		                </a>
+		            </li>
+		        </ul>
+		    </nav>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,357 @@
+:root {
+	--primary-color: rgba(255, 255, 255, 0.9);
+	--secondary-color: rgba(255, 255, 255, 0.7);
+	--hover-color: #3498db;
+}
+
+/* 全局样式 */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: Arial, sans-serif;
+	min-height: 100vh;
+	background-color: rgb(66, 29, 37);
+}
+
+a{
+	text-decoration: none;
+	color: white;
+}
+
+a:visited{
+	text-decoration: none;
+	color: white;
+}
+
+.container {
+	display: flex;
+	min-height: 100vh;
+	position: relative;
+}
+
+/* 模糊背景 */
+.background-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: -1;
+}
+
+.blur-background {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	filter: blur(2px);
+}
+
+/* 电脑端侧边栏 */
+.sidebar {
+	width: 250px;
+	background: rgba(255, 255, 255, 0.1);
+	padding: 20px;
+	position: fixed;
+	left: -250px;
+	height: 100vh;
+	transition: left 0.3s ease;
+	z-index: 1000;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	backdrop-filter: blur(15px);
+	border-right: 1px solid rgba(255, 255, 255, 0.1);
+	box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar.active {
+	left: 0;
+}
+
+/* 导航菜单 */
+.nav-list {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.nav-item a {
+	color: var(--primary-color);
+	text-decoration: none;
+	font-size: 18px;
+	padding: 10px;
+	display: block;
+	transition: 0.3s;
+	border-radius: 6px;
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+}
+
+.nav-item a:hover {
+	background: rgba(255, 255, 255, 0.1);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 侧边栏底部内容 */
+.sidebar-footer {
+	color: white;
+	text-align: center;
+	padding: 20px 0;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-icons {
+	display: flex;
+	justify-content: center;
+	gap: 15px;
+	margin-top: 15px;
+}
+
+/* 触发按钮 */
+.toggle-btn {
+	position: fixed;
+	left: 20px;
+	top: 20px;
+	color: white;
+	font-size: 24px;
+	cursor: pointer;
+	z-index: 500;
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	padding: 10px;
+	border-radius: 20%;
+	background: rgba(255, 255, 255, 0.1);
+}
+
+/* 主内容区域 */
+.main-content {
+	flex: 1;
+	position: relative;
+	padding: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* 文章容器 */
+.article-container {
+	max-width: 800px;
+	width: 100%;
+	padding: 80px 20px 100px;
+	transition: margin 0.3s;
+}
+
+/* 文章卡片 */
+.article-card {
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(15px);
+	border-radius: 12px;
+	padding: 20px;
+	margin: 30px auto;
+	position: relative;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+	width: 100%;
+	max-width: 800px;
+}
+
+.article-header {
+	margin-bottom: 15px;
+}
+
+.article-title {
+	color: var(--primary-color);
+	font-size: 1.5rem;
+	margin-bottom: 10px;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.meta-info {
+	color: var(--secondary-color);
+	font-size: 0.9rem;
+	display: flex;
+	gap: 15px;
+}
+
+/* 章节菜单系统 */
+.chapter-toggle {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	color: var(--secondary-color);
+	cursor: pointer;
+	padding: 5px;
+	border-radius: 20%;
+	transition: 0.3s;
+}
+
+.chapter-toggle:hover {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+.chapter-menu {
+	display: none;
+	position: absolute;
+	right: 0;
+	top: 40px;
+	background: rgba(0, 0, 0, 0.6);
+	backdrop-filter: blur(25px);
+	-webkit-backdrop-filter: blur(25px);
+	border-radius: 8px;
+	padding: 10px;
+	min-width: 200px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+	z-index: 100;
+	max-height: 300px;
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: rgba(255,255,255,0.3) transparent;
+}
+
+.chapter-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chapter-menu::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 4px;
+}
+
+.collapsed-chapters {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    opacity: 0.8;
+    will-change: max-height;
+    contain: content;
+}
+
+
+.expand-trigger {
+    position: relative;
+    padding-top: 8px;
+    margin-top: 5px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.expand-btn {
+    color: var(--secondary-color);
+    font-size: 0.85rem;
+    text-align: center;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.expand-btn:hover {
+    color: var(--hover-color);
+    background: rgba(255,255,255,0.05);
+}
+
+/* 展开状态 */
+.chapter-menu.expanded .collapsed-chapters {
+    max-height: 550px;;
+}
+
+.chapter-menu.expanded .expand-btn {
+    transform: rotate(180deg);
+}
+
+.chapter-menu.show {
+	display: block;
+}
+
+.chapter-item {
+	color: var(--primary-color);
+	padding: 10px;
+	border-radius: 4px;
+	transition: 0.3s;
+	font-size: 0.95rem;
+}
+
+.chapter-item:hover {
+	background: rgba(255, 255, 255, 0.1);
+	color: var(--hover-color);
+}
+
+/* 移动端底部导航 */
+.mobile-nav {
+	display: none;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(15px);
+	-webkit-backdrop-filter: blur(15px);
+	padding: 10px;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
+	z-index: 999;
+}
+
+.mobile-nav-list {
+	display: flex;
+	justify-content: space-around;
+	list-style: none;
+}
+
+.mobile-nav-item a {
+	color: var(--primary-color);
+	text-decoration: none;
+	font-size: 14px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 8px 12px;
+	border-radius: 8px;
+	transition: 0.3s;
+}
+
+.mobile-nav-item a:hover {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+	.mobile-nav {
+		display: block;
+	}
+
+	.sidebar {
+		display: none !important;
+	}
+
+	.content {
+		padding-bottom: 80px;
+	}
+
+	.toggle-btn {
+		display: none;
+	}
+}
+
+@media (min-width: 769px) {
+	.sidebar.active+.article-container {
+		margin-left: 250px;
+		width: calc(100% - 250px);
+		padding-right: calc((100% - 250px - 800px)/2 + 20px);
+		padding-left: calc((100% - 250px - 800px)/2 + 20px);
+	}
+
+	.article-card {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.toggle-btn {
+		display: block;
+	}
+}
