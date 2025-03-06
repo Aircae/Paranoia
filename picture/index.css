@@ -10,6 +10,16 @@ body{
 	background-color: rgb(66, 29, 37);
 }
 
+a{
+	text-decoration: none;
+	color: white;
+}
+
+a:visited{
+	text-decoration: none;
+	color: white;
+}
+
 .container{
     display: flex;
     min-height: 100vh;
@@ -192,4 +202,118 @@ body{
 .content{
     padding-left: 80px;
 }
+}
+
+/* 图片容器 */
+.image-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+    margin-top: 20px; /* 防止图片离顶点太近 */
+}
+
+/* 图片项 */
+.image-item {
+    position: relative;
+    width: calc(33.33% - 20px); /* 每张图片占33.33%的宽度，减去间距 */
+    min-width: 300px; /* 设置一个最小宽度，防止图片过小 */
+    height: 300px;
+    margin: 10px;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    border: 2px solid rgba(255, 255, 255, 0.1); /* 添加卡片轮廓 */
+    backdrop-filter: blur(5px);
+}
+
+/* 在小屏幕上调整图片宽度 */
+@media (max-width: 768px) {
+    .image-item {
+        width: calc(50% - 20px); /* 在小屏幕上，每张图片占50%的宽度，减去间距 */
+    }
+}
+
+/* 图片 */
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+/* 图片信息 */
+.image-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* 鼠标悬停效果 */
+.image-item:hover .image-info {
+    opacity: 1;
+}
+
+/* 作者和日期 */
+.author, .date {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* 取消图片标题 */
+.image-title {
+    display: none;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    cursor: pointer;
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: auto;
+    max-width: 90%;
+    max-height: 80vh;
+    object-fit: contain;
+    animation: zoom 0.3s;
+}
+
+@keyframes zoom {
+    from {transform: scale(0.8)}
+    to {transform: scale(1)}
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #ff6347; /* 修改为喜欢的颜色，例如橙色 */
+    font-size: 36px; /* 增大字体大小 */
+    font-weight: bold;
+    transition: 0.3s;
+    z-index: 2001;
+    background: none;
+    border: none;
+}
+
+.close-btn:hover {
+    color: #ff8c69; /* 鼠标悬停时颜色渐变 */
 }
