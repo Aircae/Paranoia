@@ -201,6 +201,7 @@ a:visited{
 
 .content{
     padding-left: 80px;
+	adding-bottom: 120px !important;
 }
 }
 
@@ -210,6 +211,7 @@ a:visited{
     flex-wrap: wrap;
     justify-content: space-around;
     padding: 20px;
+	padding-bottom: 80px;
     margin-top: 20px; /* 防止图片离顶点太近 */
 }
 
@@ -233,6 +235,10 @@ a:visited{
     .image-item {
         width: calc(50% - 20px); /* 在小屏幕上，每张图片占50%的宽度，减去间距 */
     }
+	.image-info {
+	        opacity: 1 !important; /* 强制显示信息 */
+	        background: rgba(0, 0, 0, 0.7); /* 增强背景可读性 */
+	    }
 }
 
 /* 图片 */
@@ -266,11 +272,6 @@ a:visited{
 .author, .date {
     margin: 5px 0;
     font-size: 14px;
-}
-
-/* 取消图片标题 */
-.image-title {
-    display: none;
 }
 
 .modal {

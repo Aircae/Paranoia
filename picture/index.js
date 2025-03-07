@@ -12,8 +12,10 @@ document.addEventListener('click', function(event) {
 	}
 });
 
-// 渐隐显示图片
 document.querySelectorAll('.image-item').forEach(item => {
+    // 移动端直接显示（通过CSS控制）
+    if (window.innerWidth <= 768) return;
+    // PC端保留渐隐效果
     item.style.opacity = 0;
     setTimeout(() => {
         item.style.opacity = 1;
