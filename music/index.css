@@ -434,7 +434,6 @@ body {
 	cursor: pointer;
 }
 
-/* 进度条轨道 */
 .volume-slider::-webkit-slider-runnable-track {
 	height: 6px;
 	background: rgba(0, 0, 0, 0.1);
