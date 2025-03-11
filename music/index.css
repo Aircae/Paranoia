@@ -440,7 +440,6 @@ body {
 	border-radius: 3px;
 }
 
-/* 滑块 */
 .volume-slider::-webkit-slider-thumb {
 	-webkit-appearance: none;
 	width: 16px;
