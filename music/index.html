@@ -3,36 +3,526 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Paranoia</title>
-		<link rel="icon" type="image/png" href="../favicon.png"/>
-		<link rel="stylesheet" type="text/css" href="index.css">
+		<link rel="icon" type="image/png" href="../favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 	</head>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: Arial, sans-serif;
+			min-height: 100vh;
+			background-color: rgb(66, 29, 37);
+		}
+
+		.container {
+			display: flex;
+			min-height: 100vh;
+			position: relative;
+		}
+
+		.sidebar {
+			width: 250px;
+			background: rgba(255, 255, 255, 0.1);
+			padding: 20px;
+			position: fixed;
+			left: -250px;
+			height: 100vh;
+			transition: 0.3s;
+			z-index: 1000;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			backdrop-filter: blur(15px);
+			-webkit-backdrop-filter: blur(15px);
+			border-right: 1px solid rgba(255, 255, 255, 0.1);
+			box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+		}
+
+		.sidebar.active {
+			left: 0;
+		}
+
+		.sidebar-footer {
+			color: white;
+			text-align: center;
+			padding: 20px 0;
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		.sidebar-icons {
+			display: flex;
+			justify-content: center;
+			gap: 15px;
+			margin-top: 15px;
+		}
+
+		.nav-list {
+			list-style: none;
+			display: flex;
+			flex-direction: column;
+			gap: 15px;
+		}
+
+		.nav-item a {
+			color: rgba(255, 255, 255, 0.9);
+			text-decoration: none;
+			font-size: 18px;
+			padding: 10px;
+			display: block;
+			transition: 0.3s;
+			border-radius: 6px;
+			backdrop-filter: blur(5px);
+		}
+
+		.nav-item a:hover {
+			background: rgba(255, 255, 255, 0.1);
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		}
+
+		.main-content {
+			flex: 1;
+			position: relative;
+		}
+
+		.background-container {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 0;
+		}
+
+		.blur-background {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			filter: blur(2px);
+		}
+
+		.content {
+			position: relative;
+			z-index: 1;
+			padding: 40px;
+			color: white;
+			text-align: center;
+			min-height: 20vh;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			border-color: #333;
+		}
+
+		.toggle-btn {
+			position: fixed;
+			left: 20px;
+			top: 20px;
+			color: white;
+			font-size: 24px;
+			cursor: pointer;
+			z-index: 500;
+			display: none;
+			backdrop-filter: blur(5px);
+			padding: 10px;
+			border-radius: 20%;
+			background: rgba(255, 255, 255, 0.1);
+		}
+
+		@media (max-width: 768px) {
+			.mobile-nav {
+				display: block;
+			}
+
+			.sidebar {
+				display: none;
+			}
+
+			.content {
+				padding-bottom: 80px;
+			}
+		}
+
+		@media (min-width: 769px) {
+			.toggle-btn {
+				display: block;
+			}
+
+			.content {
+				padding-left: 80px;
+			}
+		}
+
+		.floating-card {
+			position: fixed;
+			bottom: 20px;
+			left: 50%;
+			transform: translateX(-50%);
+			background: rgba(255, 255, 255, 0.95);
+			padding: 15px 30px;
+			border-radius: 12px;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+			z-index: 1001;
+			max-width: 80%;
+			min-width: 200px;
+			text-align: center;
+			backdrop-filter: blur(8px);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			color: #333;
+			font-size: 14px;
+			transition: 0.3s;
+		}
+
+		.floating-card:hover {
+			transform: translateX(-50%) translateY(-5px);
+			box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+		}
+
+		@media (max-width: 768px) {
+			.floating-card {
+				bottom: 15px;
+				padding: 12px 20px;
+				font-size: 13px;
+			}
+		}
+
+		.music-player {
+			display: flex;
+			align-items: center;
+			gap: 15px;
+		}
+
+		.track-info {
+			flex: 1;
+			min-width: 120px;
+		}
+
+		.progress-bar {
+			height: 3px;
+			background: rgba(0, 0, 0, 0.1);
+			border-radius: 2px;
+			margin-top: 8px;
+		}
+
+		.progress {
+			width: 30%;
+			height: 100%;
+			background: #ff6b6b;
+			border-radius: 2px;
+			transition: width 0.3s ease;
+		}
+
+		.play-btn {
+			width: 40px;
+			height: 40px;
+			border: none;
+			border-radius: 50%;
+			background: #ff6b6b;
+			color: white;
+			cursor: pointer;
+			transition: 0.3s;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.play-btn.animate {
+			transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		}
+
+		.play-btn:hover {
+			transform: scale(1.1);
+			box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+		}
+
+		.play-btn.active {
+			background: #4ecdc4;
+		}
+
+		.play-btn i {
+			margin-left: 2px;
+			/* 调整播放图标居中 */
+		}
+
+		/* 添加按钮动画 */
+		@keyframes pulse {
+			0% {
+				transform: scale(1);
+			}
+
+			50% {
+				transform: scale(0.9);
+			}
+
+			100% {
+				transform: scale(1);
+			}
+		}
+
+		.play-btn:active {
+			animation: pulse 0.3s ease;
+		}
+
+		/* 响应式调整 */
+		@media (max-width: 768px) {
+			.music-player {
+				flex-direction: column;
+			}
+
+			.track-info {
+				width: 100%;
+				text-align: center;
+			}
+
+			.song-title {
+				font-size: 13px;
+			}
+		}
+
+		.progress-container {
+			cursor: pointer;
+			padding: 8px 0;
+		}
+
+		/* 进度条跳转样式 */
+		.progress-bar {
+			height: 4px;
+			background: rgba(0, 0, 0, 0.1);
+			border-radius: 2px;
+			position: relative;
+		}
+
+		.progress {
+			height: 100%;
+			background: #ff6b6b;
+			border-radius: 2px;
+			transition: width 0.1s linear;
+		}
+
+		/* 新增点击动画 */
+		@keyframes ripple {
+			0% {
+				transform: scale(1);
+				opacity: 1;
+			}
+
+			100% {
+				transform: scale(2);
+				opacity: 0;
+			}
+		}
+
+		.controls {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			position: relative;
+		}
+
+		/* 修复进度条显示 */
+		.progress {
+			width: 0%;
+		}
+
+		.ctrl-btn {
+			width: 35px;
+			height: 35px;
+			border: none;
+			border-radius: 50%;
+			background: rgba(255, 107, 107, 0.9);
+			color: white;
+			cursor: pointer;
+			transition: 0.3s;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.ctrl-btn:hover {
+			background: #ff5252;
+			transform: scale(1.08);
+		}
+
+		.song-list {
+			list-style: none;
+			margin-top: 30px;
+			max-width: 600px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.song-item {
+			padding: 15px;
+			margin: 10px 0;
+			background: rgba(255, 255, 255, 0.1);
+			border-radius: 8px;
+			cursor: pointer;
+			transition: 0.3s;
+		}
+
+		.song-item:hover {
+			background: rgba(255, 255, 255, 0.2);
+		}
+
+		.song-item.active {
+			background: rgba(255, 107, 107, 0.3) !important;
+			border: 1px solid rgba(255, 107, 107, 0.5);
+		}
+
+		/* 新增动画 */
+		@keyframes rotate {
+			from {
+				transform: rotate(0deg);
+			}
+
+			to {
+				transform: rotate(360deg);
+			}
+		}
+
+		.playing .play-btn {
+			animation: rotate 2s linear infinite;
+		}
+
+		/* 移动端优化 */
+		@media (max-width: 768px) {
+			.controls {
+				gap: 8px;
+			}
+
+			.ctrl-btn {
+				width: 30px;
+				height: 30px;
+			}
+		}
+
+		.volume-control {
+			position: relative;
+			display: flex;
+			align-items: center;
+			height: 40px;
+			margin-left: 8px;
+		}
+
+		/* 音量条容器 */
+		.volume-slider-container {
+			position: absolute;
+			left: -25px;
+			bottom: 70px;
+			/* 增加间距 */
+			transform: rotate(-90deg);
+			background: rgba(0, 0, 0, 0.15);
+			border-radius: 8px;
+			padding: 12px 5px;
+			opacity: 0;
+			visibility: hidden;
+			transition: all 0.3s ease;
+			z-index: 100;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		}
+
+		.volume-control:hover .volume-slider-container {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		/* 音量条样式 */
+		.volume-slider {
+			-webkit-appearance: none;
+			width: 80px;
+			height: 6px;
+			background: rgba(255, 255, 255, 0.3);
+			border-radius: 3px;
+
+			margin: 0;
+			cursor: pointer;
+		}
+
+		.volume-slider::-webkit-slider-runnable-track {
+			height: 6px;
+			background: rgba(0, 0, 0, 0.1);
+			border-radius: 3px;
+		}
+
+		.volume-slider::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			width: 16px;
+			height: 16px;
+			background: #ff6b6b;
+			border-radius: 50%;
+			margin-top: -5px;
+			transition: 0.3s;
+		}
+
+		/* 音量按钮样式对齐 */
+		.volume-btn {
+			width: 35px;
+			height: 35px;
+			border: none;
+			border-radius: 50%;
+			background: rgba(255, 107, 107, 0.9);
+			color: white;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: 0.3s;
+		}
+
+		.volume-btn:hover {
+			background: #ff5252;
+			transform: scale(1.08);
+		}
+
+		@media (max-width: 768px) {
+			.volume-control {
+				height: 30px;
+				margin-left: 5px;
+			}
+
+			.volume-btn {
+				width: 30px;
+				height: 30px;
+				font-size: 14px;
+			}
+
+			.volume-slider {
+				width: 70px;
+				bottom: 48px;
+			}
+		}
+	</style>
 	<body>
 		<div class="container">
-		    <nav class="sidebar">
-		        <ul class="nav-list">
-		            <li class="nav-item"><a href="../document/index.html"><i class="fas fa-file-alt"></i> 文库</a></li>
-		            <li class="nav-item"><a href="../music/index.html"><i class="fas fa-music"></i> 音乐</a></li>
-		            <li class="nav-item"><a href="../picture/index.html"><i class="fas fa-image"></i> 图库</a></li>
-		        </ul>
+			<nav class="sidebar">
+				<ul class="nav-list">
+					<li class="nav-item"><a href="../document/index.html"><i class="fas fa-file-alt"></i> 文库</a></li>
+					<li class="nav-item"><a href="../music/index.html"><i class="fas fa-music"></i> 音乐</a></li>
+					<li class="nav-item"><a href="../picture/index.html"><i class="fas fa-image"></i> 图库</a></li>
+				</ul>
 
-		        <div class="sidebar-footer">
-		            <div class="sidebar-icons">
-		                <img src="../icon.png"/>
-		            </div>
-		            <p style="color: rgba(255, 255, 255, 0.7)">AiKo</p>
-		        </div>
-		    </nav>
+				<div class="sidebar-footer">
+					<div class="sidebar-icons">
+						<img src="../icon.png" />
+					</div>
+					<p style="color: rgba(255, 255, 255, 0.7)">AiKo</p>
+				</div>
+			</nav>
 
-		    <div class="toggle-btn" onclick="toggleSidebar()">
-		        <i class="fas fa-bars"></i>
-		    </div>
-		
-		    <main class="main-content">
-		        <div class="background-container">
-		            <img src="../background.png" alt="背景图片" class="blur-background">
-		        </div>
+			<div class="toggle-btn" onclick="toggleSidebar()">
+				<i class="fas fa-bars"></i>
+			</div>
+
+			<main class="main-content">
+				<div class="background-container">
+					<img src="../background.png" alt="背景图片" class="blur-background">
+				</div>
 				<div class="content">
 					<h1>歌曲列表</h1>
 					<ul class="song-list">
@@ -72,8 +562,129 @@
 						<audio id="music-player"></audio>
 					</div>
 				</div>
-		    </main>
+			</main>
+			<script>
+				function toggleSidebar() {
+					document.querySelector('.sidebar').classList.toggle('active');
+				}
+
+				document.addEventListener('click', function(event) {
+					const sidebar = document.querySelector('.sidebar');
+					const toggleBtn = document.querySelector('.toggle-btn');
+
+					if (!sidebar.contains(event.target) && !toggleBtn.contains(event.target)) {
+						sidebar.classList.remove('active');
+					}
+				});
+
+				const audio = document.getElementById('music-player');
+				const playBtn = document.querySelector('.play-btn');
+				const prevBtn = document.querySelector('.prev-btn');
+				const nextBtn = document.querySelector('.next-btn');
+				const songTitle = document.querySelector('.song-title');
+
+				// 动态生成播放列表
+				const songItems = document.querySelectorAll('.song-item');
+				const playlist = Array.from(songItems).map(item => ({
+					title: item.textContent.trim(),
+					file: item.dataset.song
+				}));
+
+				let currentTrack = 0;
+				let isPlaying = false;
+
+				// 修复播放功能
+				function togglePlay() {
+					isPlaying = !isPlaying;
+					playBtn.classList.toggle('active');
+					playBtn.querySelector('i').className = isPlaying ? 'fas fa-pause' : 'fas fa-play';
+					isPlaying ? audio.play() : audio.pause();
+				}
+
+				function loadTrack(index) {
+					currentTrack = (index + playlist.length) % playlist.length;
+					audio.src = playlist[currentTrack].file;
+					songTitle.textContent = playlist[currentTrack].title;
+
+					// 预加载音频
+					audio.load();
+
+					songItems.forEach(item => item.classList.remove('active'));
+					songItems[currentTrack].classList.add('active');
+
+					if (isPlaying) {
+						audio.play().catch(error => {
+							console.error('播放错误:', error);
+							isPlaying = false;
+							togglePlay();
+						});
+					}
+				}
+				const volumeSlider = document.querySelector('.volume-slider');
+				const volumeBtn = document.querySelector('.volume-btn');
+				let lastVolume = 1;
+
+				volumeSlider.addEventListener('input', (e) => {
+					const value = e.target.value;
+					audio.volume = value;
+					volumeBtn.innerHTML = value == 0 ?
+						'<i class="fas fa-volume-mute"></i>' :
+						value < 0.5 ?
+						'<i class="fas fa-volume-down"></i>' :
+						'<i class="fas fa-volume-up"></i>';
+				});
+
+				// 静音切换
+				volumeBtn.addEventListener('click', () => {
+					if (audio.volume > 0) {
+						lastVolume = audio.volume;
+						audio.volume = 0;
+						volumeSlider.value = 0;
+						volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+					} else {
+						audio.volume = lastVolume;
+						volumeSlider.value = lastVolume;
+						volumeBtn.innerHTML = lastVolume < 0.5 ?
+							'<i class="fas fa-volume-down"></i>' :
+							'<i class="fas fa-volume-up"></i>';
+					}
+				});
+
+				// 初始化音量
+				audio.volume = 1;
+
+				// 歌曲点击事件
+				songItems.forEach((item, index) => {
+					item.addEventListener('click', () => {
+						loadTrack(index);
+						if (!isPlaying) togglePlay();
+					});
+				});
+
+				// 事件绑定
+				playBtn.addEventListener('click', togglePlay);
+				prevBtn.addEventListener('click', () => loadTrack(currentTrack - 1));
+				nextBtn.addEventListener('click', () => loadTrack(currentTrack + 1));
+
+				// 进度更新
+				audio.addEventListener('timeupdate', () => {
+					const progress = (audio.currentTime / audio.duration) * 100;
+					document.querySelector('.progress').style.width = `${progress}%`;
+				});
+
+				// 自动下一首
+				audio.addEventListener('ended', () => loadTrack(currentTrack + 1));
+
+				// 初始化首曲
+				loadTrack(0);
+				const progressContainer = document.querySelector('.progress-container');
+				// 进度条跳转逻辑
+				progressContainer.addEventListener('click', (e) => {
+					const rect = progressContainer.getBoundingClientRect();
+					const percent = (e.clientX - rect.left) / rect.width;
+					audio.currentTime = percent * audio.duration;
+				});
+			</script>
 		</div>
-		<script src="index.js"></script>
 	</body>
 </html>
