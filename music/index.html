@@ -27,11 +27,11 @@
 		}
 
 		.sidebar {
-			width: 250px;
 			background: rgba(255, 255, 255, 0.1);
 			padding: 20px;
-			position: fixed;
+			width: 250px;
 			left: -250px;
+			position: fixed;
 			height: 100vh;
 			transition: 0.3s;
 			z-index: 9999;
@@ -346,38 +346,70 @@
 
 		.song-list {
 			list-style: none;
-			margin-top: 30px;
-			max-width: 600px;
-			margin-left: auto;
-			margin-right: auto;
+			margin: 2rem auto;
+			max-width: 800px;
+			width: 90%;
+			padding: 0 15px;
 		}
 
+		/* 优化歌曲项样式 */
 		.song-item {
-			padding: 15px;
-			margin: 10px 0;
-			background: rgba(255, 255, 255, 0.1);
-			border-radius: 8px;
+			padding: 18px 25px;
+			margin: 12px 0;
+			background: rgba(255, 255, 255, 0.05);
+			border-radius: 12px;
 			cursor: pointer;
-			transition: 0.3s;
-		}
-
-		.song-item:hover {
-			background: rgba(255, 255, 255, 0.2);
+			transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			backdrop-filter: blur(4px);
+			border: 1px solid transparent;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 		}
 
 		.song-item.active {
-			background: rgba(255, 107, 107, 0.3) !important;
-			border: 1px solid rgba(255, 107, 107, 0.5);
+			background: linear-gradient(135deg, rgba(255, 107, 107, 0.25), rgba(255, 107, 107, 0.15)) !important;
+			border: 1px solid rgba(255, 107, 107, 0.4);
+			transform: scale(1.02);
+			border-radius: 12px;
+			animation: itemActive 0.4s ease;
+		}
+
+		.song-item.playing::after {
+			content: "\f001";
+			font-family: "Font Awesome 5 Free";
+			color: #ff6b6b;
+			margin-left: 15px;
+			font-size: 14px;
+			animation: pulse 1.2s infinite;
+		}
+
+		.song-item {
+			color: rgba(255, 255, 255, 0.9);
+			font-size: 16px;
+			letter-spacing: 0.5px;
+			font-weight: 500;
+		}
+
+		.song-item {
+			-webkit-tap-highlight-color: transparent;
+			outline: none;
+			touch-action: manipulation;
 		}
 
 		/* 新增动画 */
-		@keyframes rotate {
-			from {
-				transform: rotate(0deg);
+		@keyframes itemActive {
+			0% {
+				transform: scale(1);
 			}
 
-			to {
-				transform: rotate(360deg);
+			50% {
+				transform: scale(1.03);
+			}
+
+			100% {
+				transform: scale(1.02);
 			}
 		}
 
@@ -491,6 +523,45 @@
 				width: 70px;
 				bottom: 48px;
 			}
+			.sidebar{
+				width: 150px;
+				left: -150px;
+			}
+		}
+
+		@media (max-width: 768px) {
+			.song-item {
+				padding: 15px 20px;
+				margin: 10px 0;
+				font-size: 15px;
+			}
+
+			.song-item::before {
+				font-size: 13px;
+				margin-right: 12px;
+			}
+
+			.song-list {
+				width: 100%;
+				padding: 0 10px;
+			}
+		}
+
+		/* 添加滚动动画 */
+		@keyframes listEntrance {
+			from {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		.song-item {
+			animation: listEntrance 0.6s ease forwards;
 		}
 	</style>
 	<body>
@@ -521,8 +592,16 @@
 				<div class="content">
 					<h1>歌曲列表</h1>
 					<ul class="song-list">
+						<li class="song-item" data-song="mp3/NOVA.flac">NOVA</li>
 						<li class="song-item" data-song="mp3/一重加害.flac">一重加害</li>
 						<li class="song-item" data-song="mp3/二重变革.flac">二重变革</li>
+						<li class="song-item" data-song="mp3/三重爱恋.flac">三重爱恋</li>
+						<li class="song-item" data-song="mp3/四重罪孽.flac">四重罪孽</li>
+						<li class="song-item" data-song="mp3/五重空洞.flac">五重空洞</li>
+						<li class="song-item" data-song="mp3/六重不忠.wav">六重不忠</li>
+						<li class="song-item" data-song="mp3/七重痼病.wav">七重痼病</li>
+						<li class="song-item" data-song="mp3/八重回归.wav">八重回归</li>
+						<li class="song-item" data-song="mp3/九重现实.wav">九重现实</li>
 					</ul>
 				</div>
 				<div class="floating-card">
